@@ -9,7 +9,7 @@ function App() {
     <>
       <BrowserRouter>
       <GlobalStyle />
-      <Header />
+        <Header />
         <AppRoutes />
       </BrowserRouter>
 

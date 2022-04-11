@@ -6,14 +6,12 @@ width: 100%;
 position: absolute;
 height: 200px;
 display: flex;
+justify-content: center;
 align-items: center;
-background-color: #000;
-border: 1px;
-justify-items: center;
+
 
     img{
-        width: 150px;
-        height: 140px;
+        width: 250px;
     }
 
 `;
