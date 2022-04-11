@@ -9,14 +9,15 @@ export const GlobalStyle = createGlobalStyle`
     --background-box: #4A6273;
     
     //text
+    --title: #000;
     --title-body: #FFF;
-    --text: #9CB8B8;
+    --text: #aaa;
 
 
     // buttons
 
-    --bg-button: #AB2546;
-
+    --bg-button: #6666ff;
+    
 }
 
  * {
@@ -29,7 +30,26 @@ export const GlobalStyle = createGlobalStyle`
   body{
       background: url(${bgcar});
       font-size: 16px;
+      -webkit-font-smoothing: antialiased;
   }
+
+  body, input, textarea, button, select{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+button{
+    cursor: pointer;
+}
+[disabled]{
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+h1 , h2 , h3 , h4 , h5 , h6, strong{
+    font-weight: 600;
+}
+
 
   #root {
     width: 100vw;

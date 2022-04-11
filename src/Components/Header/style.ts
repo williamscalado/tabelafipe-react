@@ -2,16 +2,17 @@ import styled from "styled-components";
 
 
 export const ContainerHeader = styled.div`
-width: 100%;
-position: absolute;
-height: 200px;
+width: 30%;
+margin: auto;
+height: 100%;
+background-color: #330033;
 display: flex;
 justify-content: center;
 align-items: center;
 
-
     img{
-        width: 250px;
+        width: 300px;
     }
+
 
 `;
