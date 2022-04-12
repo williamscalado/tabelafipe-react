@@ -6,14 +6,8 @@ interface IBrands {
     codigo: string
 }
 
-interface IModelCar {
-    nome: string,
-    codigo: string
-}
-interface IModelByYear {
-    nome: string,
-    codigo: string
-}
+interface IModelCar extends IBrands{}
+interface IModelByYear extends IBrands{}
 interface ICarSumary {
     Valor: string,
     Marca: string,
@@ -112,6 +106,7 @@ export const FipeProvider = ({ children }: IFipeProviderProps) => {
     const resetState = () =>{
         setState({...initialState , brand: state.brand })
     }
+    
     return (
         <fipeContext.Provider value={{ state, getModelById, getModelByYear, setCodeByYear,  resetState }}>
             {children}
