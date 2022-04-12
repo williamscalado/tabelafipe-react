@@ -18,7 +18,7 @@ height: 100%;
     padding: 0.5rem;
     }
     button{
-        padding: 0.5rem;
+        padding: 0.8rem;
         background: var(--bg-button);
         border-radius: 0.5rem;
         border: 0;
@@ -38,6 +38,9 @@ export const SumaryCar = styled.div`
         li{
             list-style-type: none;
             padding: 0.2rem;
+            span{
+                font-weight: 600;
+            }
         }
     }
 

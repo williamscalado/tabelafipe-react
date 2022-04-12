@@ -26,19 +26,6 @@ interface ICarSumary {
     SiglaCombustivel: string
 }
 
-
-
-/*
-
-API
-
-https://parallelum.com.br/fipe/api/v1/carros/marcas
-https://parallelum.com.br/fipe/api/v1/carros/marcas/59/modelos
-https://parallelum.com.br/fipe/api/v1/carros/marcas/59/modelos/5940/anos
-https://parallelum.com.br/fipe/api/v1/carros/marcas/59/modelos/5940/anos/2014-3
-
-*/
-
 interface IFipeProviderProps {
     children: ReactNode
 }
@@ -50,7 +37,8 @@ interface IState {
     modelByYear: IModelByYear[],
     codeBrand: number,
     codeModel: number,
-    codeYear: string
+    codeYear: string,
+    carSumary: ICarSumary
 }
 
 const initialState: IState = {
@@ -59,7 +47,8 @@ const initialState: IState = {
     modelByBrands: [],
     codeModel: 0,
     modelByYear: [],
-    codeYear: ""
+    codeYear: "",
+    carSumary: {} as ICarSumary
 }
 
 interface IFipeContext {
@@ -67,7 +56,7 @@ interface IFipeContext {
     getModelById: (codigo: string) => Promise<void>,
     getModelByYear: (codigo: string) => Promise<void>,
     setCodeByYear: (codigo: string) => void
-    //getCarSumary: (codigo: string) => Promise<ICarSumary>
+    resetState: () => void
 }
 
 const fipeContext = createContext<IFipeContext>(
@@ -109,16 +98,23 @@ export const FipeProvider = ({ children }: IFipeProviderProps) => {
         }
     }
 
-    const setCodeByYear = (codigo: string) => {
+    const setCodeByYear = async (codigo: string) => {
         try {
-            setState({ ...state,  codeYear: codigo })
+            const { codeBrand , codeModel } = state
+            const response = await Api.get(`/marcas/${codeBrand}/modelos/${codeModel}/anos/${codigo}`)
+
+            setState({ ...state,  codeYear: codigo,  carSumary: response.data })
         } catch (error) {
             
         }
     }
 
+    const resetState = () =>{
+        setState(initialState)
+    }
+
     return (
-        <fipeContext.Provider value={{ state, getModelById, getModelByYear, setCodeByYear }}>
+        <fipeContext.Provider value={{ state, getModelById, getModelByYear, setCodeByYear,  resetState }}>
             {children}
         </fipeContext.Provider>
     )

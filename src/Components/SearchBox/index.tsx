@@ -29,9 +29,7 @@ export const SearchBox = () => {
     }
 
     const { codeBrand, codeModel, codeYear, brand, modelByBrands, modelByYear } = state
-
-
-
+    
     return (
         <>
             <ContainerBox>
