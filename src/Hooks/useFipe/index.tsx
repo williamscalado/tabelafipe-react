@@ -110,9 +110,8 @@ export const FipeProvider = ({ children }: IFipeProviderProps) => {
     }
 
     const resetState = () =>{
-        setState(initialState)
+        setState({...initialState , brand: state.brand })
     }
-
     return (
         <fipeContext.Provider value={{ state, getModelById, getModelByYear, setCodeByYear,  resetState }}>
             {children}
@@ -123,6 +122,5 @@ export const FipeProvider = ({ children }: IFipeProviderProps) => {
 
 export function useFipe() {
     const context = useContext(fipeContext)
-
     return context
 }
