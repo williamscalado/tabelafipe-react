@@ -1,20 +1,20 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { Api } from "../../Services/Api";
 
-interface IBrands{
- nome: string,
- codigo: string   
+interface IBrands {
+    nome: string,
+    codigo: string
 }
 
 interface IModelCar {
     nome: string,
-    codigo: string 
+    codigo: string
 }
 interface IModelByYear {
     nome: string,
-    codigo: string 
+    codigo: string
 }
-interface ICarSumary{
+interface ICarSumary {
     Valor: string,
     Marca: string,
     Modelo: string,
@@ -50,7 +50,7 @@ interface IState {
     modelByYear: IModelByYear[],
     codeBrand: number,
     codeModel: number,
-    codeYear: number 
+    codeYear: number
 }
 
 const initialState: IState = {
@@ -63,8 +63,8 @@ const initialState: IState = {
 }
 
 interface IFipeContext {
-    state : IState,
-    getModelById: (codigo: string) =>  Promise<void>,
+    state: IState,
+    getModelById: (codigo: string) => Promise<void>,
     getModelByYear: (codigo: string) => Promise<void>,
     //getCarSumary: (codigo: string) => Promise<ICarSumary>
 }
@@ -73,51 +73,52 @@ const fipeContext = createContext<IFipeContext>(
     {} as IFipeContext
 )
 
-export const FipeProvider = ({children}: IFipeProviderProps) => {
+export const FipeProvider = ({ children }: IFipeProviderProps) => {
 
-    const [state, setState ] = useState(initialState)
+    const [state, setState] = useState(initialState)
 
-    useEffect(()=>{
-        if(state.brand){
-            getAllBrand() 
+    useEffect(() => {
+        if (state.brand) {
+            getAllBrand()
         }
     }, [])
 
-    const getAllBrand = async () =>{
+    const getAllBrand = async () => {
         const response = await Api.get('/marcas')
-
-        setState({...state, brand: response.data}) 
-
+        setState({ ...state, brand: response.data })
     }
+
     const getModelById = async (codigo: string) => {
 
-        const response = await Api.get(`/marcas/${codigo}/modelos`)
-        setState({...state, modelByBrands: response.data.modelos, codeBrand: +codigo})
-
-    } 
-
-
+        try {
+            const response = await Api.get(`/marcas/${codigo}/modelos`)
+            setState({ ...state, modelByBrands: response.data.modelos, codeBrand: +codigo })
+        } catch (error) {
+            
+        }
+    }
     const getModelByYear = async (codigo: string) => {
 
-        const { codeBrand } = state
+        try {
+            const { codeBrand } = state
+            const response = await Api.get(`/marcas/${codeBrand}/modelos/${codigo}/anos`)
+            setState({ ...state, modelByYear: response.data, codeModel: +codigo })
+        } catch (error) {
+            
+        }
+    }
 
-        const response = await Api.get(`/marcas/${codeBrand}/modelos/${codigo}/anos`)
-
-        setState({...state, modelByYear: response.data, codeModel: +codigo  })
-
-    } 
-  
 
 
-return (
-    <fipeContext.Provider value={{state , getModelById, getModelByYear}}>
-        {children}
-    </fipeContext.Provider>
-)
+    return (
+        <fipeContext.Provider value={{ state, getModelById, getModelByYear }}>
+            {children}
+        </fipeContext.Provider>
+    )
 
 }
 
-export function useFipe(){
+export function useFipe() {
     const context = useContext(fipeContext)
 
     return context

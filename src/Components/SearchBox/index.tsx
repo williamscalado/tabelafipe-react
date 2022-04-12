@@ -1,24 +1,33 @@
 import React, { Suspense } from "react"
-import {  useFipe } from "../../Hooks/useFipe"
+import { useFipe } from "../../Hooks/useFipe"
 import { ContainerBox, SeachrForm } from "./style"
 
 
 export const SearchBox = () => {
-    const { state, getModelById , getModelByYear } = useFipe()
 
-    const brands = state.brand
-    const modelByBrands = state.modelByBrands
-    const yearByModel = state.modelByYear
+    const { state, getModelById, getModelByYear } = useFipe()
 
-    const handleSelectBrand = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const codeBrand = event.target.value
-        getModelById(codeBrand)       
+    const fipeData = {
+        brands: state.brand,
+        modelByBrands: state.modelByBrands,
+        yearByModel: state.modelByYear
     }
-    const handleSelectModel = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const codeModel = event.target.value
-        getModelByYear(codeModel)       
+
+    type carOptions = {
+        [key: string]: Promise<void>
     }
-    
+    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const code = event.target.value
+        
+        switch (event.target.name) {
+            case "carBrand": return getModelById(code);
+            case "carModel": return getModelByYear(code)
+        }
+
+    }
+
+    console.log(state)
+
     return (
         <>
             <ContainerBox>
@@ -28,9 +37,9 @@ export const SearchBox = () => {
                 <SeachrForm>
                     <span>Qual a marca do seu carro?</span>
                     <Suspense fallback={<h6>carregando...</h6>} >
-                        <select name="carBrand"  onChange={handleSelectBrand} >
-                        <option value="0" >Escolha uma marca!</option>
-                            {brands.map((brand) => {
+                        <select name="carBrand" id="carBrand" onChange={handleSelect} >
+                            <option value="0" >Escolha uma marca!</option>
+                            {fipeData.brands.map((brand) => {
                                 return (
                                     <option key={brand.codigo} value={brand.codigo} >{brand.nome}</option>
                                 )
@@ -38,29 +47,29 @@ export const SearchBox = () => {
                         </select>
                     </Suspense>
                     <span>Qual modelo do seu carro?</span>
-                    <Suspense fallback={<h6>carregando...</h6>} >                   
-                    <select name="carModel" id="carModel" onChange={handleSelectModel} >                        
-                        <option value="0" >Escolha seu modelo!</option>
-                            {modelByBrands.map((model) => {
+                    <Suspense fallback={<h6>carregando...</h6>} >
+                        <select name="carModel" id="carModel" onChange={handleSelect} >
+                            <option value="0" >Escolha seu modelo!</option>
+                            {fipeData.modelByBrands.map((model) => {
                                 return (
                                     <option key={model.codigo} value={model.codigo} >{model.nome}</option>
                                 )
                             })}
                         </select>
                     </Suspense>
-                   
+
                     <span>Qual o ano do seu carro?</span>
-                    <Suspense fallback={<h6>carregando...</h6>} >                   
-                    <select name="carModel" id="carModel" >                        
-                        <option value="0" >Escolha seu modelo!</option>
-                            {yearByModel.map((modelYear) => {
+                    <Suspense fallback={<h6>carregando...</h6>} >
+                        <select name="carYear" id="carYear" >
+                            <option value="0" >Escolha seu modelo!</option>
+                            {fipeData.yearByModel.map((modelYear) => {
                                 return (
                                     <option key={modelYear.codigo} value={modelYear.codigo} >{modelYear.nome}</option>
                                 )
                             })}
                         </select>
                     </Suspense>
-                    <button> Mostar dados </button>
+                    <button> Mostar dados do carro</button>
 
 
 
