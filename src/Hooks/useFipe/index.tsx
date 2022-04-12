@@ -50,7 +50,7 @@ interface IState {
     modelByYear: IModelByYear[],
     codeBrand: number,
     codeModel: number,
-    codeYear: number
+    codeYear: string
 }
 
 const initialState: IState = {
@@ -59,7 +59,7 @@ const initialState: IState = {
     modelByBrands: [],
     codeModel: 0,
     modelByYear: [],
-    codeYear: 0
+    codeYear: ""
 }
 
 interface IFipeContext {
@@ -111,7 +111,7 @@ export const FipeProvider = ({ children }: IFipeProviderProps) => {
 
     const setCodeByYear = (codigo: string) => {
         try {
-            setState({ ...state,  codeYear: +codigo })
+            setState({ ...state,  codeYear: codigo })
         } catch (error) {
             
         }
