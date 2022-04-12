@@ -66,6 +66,7 @@ interface IFipeContext {
     state: IState,
     getModelById: (codigo: string) => Promise<void>,
     getModelByYear: (codigo: string) => Promise<void>,
+    setCodeByYear: (codigo: string) => void
     //getCarSumary: (codigo: string) => Promise<ICarSumary>
 }
 
@@ -108,10 +109,16 @@ export const FipeProvider = ({ children }: IFipeProviderProps) => {
         }
     }
 
-
+    const setCodeByYear = (codigo: string) => {
+        try {
+            setState({ ...state,  codeYear: +codigo })
+        } catch (error) {
+            
+        }
+    }
 
     return (
-        <fipeContext.Provider value={{ state, getModelById, getModelByYear }}>
+        <fipeContext.Provider value={{ state, getModelById, getModelByYear, setCodeByYear }}>
             {children}
         </fipeContext.Provider>
     )
